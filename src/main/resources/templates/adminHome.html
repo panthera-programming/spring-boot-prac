@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Home</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link th:href="@{/styles.css}" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" /><!--person add-->
+        <!-- <span class="material-symbols-rounded">person_add</span>-->
+        <!--<span class="material-symbols-rounded">person_remove</span> -->
+        <!--<span class="material-symbols-rounded">edit</span> -->
+    </head>
+    <body>
+        <header>
+            <nav style="position: relative; margin: 2rem 0;">
+                <span class="material-symbols-rounded"
+                      style="position: absolute;left: 2rem;bottom: 1rem;top: 2rem;font-size: 45px;color: rgba(0, 0, 0, 0.8);"
+                >
+                    home
+                </span>
+                <span class="material-symbols-rounded"
+                      style="position: absolute;right: 2rem;bottom: 1rem;top: 2rem;"
+                >
+                    <a th:href="@{/logout}">
+                          <span class="material-symbols-outlined">
+                              logout
+                          </span>
+                    </a>
+                </span>
+            </nav>
+        </header>
+        <main>
+            <section>
+                <h3 style="font-size: 18px;text-align: center;">USER MANAGEMENT</h3>
+                <div style="width: 90%;margin: 2rem auto;">
+                    <article class="table-head">
+                        <span style="font-size: 18px;">User Id</span>
+                        <span style="font-size: 18px;">Username</span>
+                        <span style="font-size: 18px;width: 250px;">Email</span>
+                        <span style="font-size: 18px;width: 100px;">Role</span>
+                        <span style="font-size: 18px;width: 100px;">Edit</span>
+                        <span style="font-size: 18px;width: 200px;">Remove User</span>
+                    </article>
+                    <hr>
+                    <div style="position:relative">
+                        <article th:each="user : ${usersList}" class="table-data" value="${user}">
+                            <span th:text="${user.id}"></span>
+                            <span th:text="${user.name}"></span>
+                            <span th:text="${user.email}" style="width: 250px;"></span>
+                            <span th:text="${user.role.name}" style="width: 100px;"></span>
+                            <span class="material-symbols-rounded" style="width: 100px; text-align: center;">
+                                <a th:href="@{/admin/edit/{id}(id=${user.id},edit=true)}"
+                                   class="material-symbols-rounded"
+                                >
+                                    edit
+                                </a>
+                            </span>
+                            <span style="width: 200px;text-align: center;">
+                                <a th:href="@{/admin/delete/{id}(id=${user.id})}"
+                                   class="material-symbols-rounded"
+                                   style="color: #C80909;"
+                                >
+                                    person_remove
+                                </a>
+                            </span>
+                        </article>
+                    </div>
+                    <div style="position: absolute;right: 8rem;bottom: 10rem;">
+                        <a th:href="@{/admin?addUser}">
+                                <span class="material-symbols-rounded"
+                                      style="font-size: 45px;"
+                                >
+                                    person_add
+                                </span>
+                        </a>
+                    </div>
+                </div>
+                <div th:if="${param.edit}">
+                    <div class="form-container">
+                        <h5 style="font-size: 16px;text-align: left;">Edit User Details</h5>
+                        <div>
+                            <form th:object="${userEdit}" th:action="@{/admin/edit/save/{id}(id=${userEdit.id})}" th:method="POST">
+                                <span class="form-fields">
+                                    <label>Username</label>
+                                    <input th:field="*{name}" type="text" value="${user.name}">
+                                </span>
+                                <span class="form-fields">
+                                    <label>Email</label>
+                                    <input th:field="*{email}" type="text" value="${user.email}">
+                                </span>
+                                <span class="form-fields">
+                                    <label>Role</label>
+                                    <select th:field="*{roleName}">
+                                        <option th:each="role : ${rolesList}" th:value="${role}" th:text="${role}" style="width: 80px;"></option>
+                                    </select>
+                                </span>
+                                <span class="form-fields">
+                                    <label>Password</label>
+                                    <input th:field="*{password}" type="password" placeholder="enter new password">
+                                </span>
+                                <div>
+                                    <input type="submit" value="Update" style="margin: 0.2rem auto;width: 70px;"/>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div th:if="${param.addUser}">
+                    <div class="form-container">
+                        <h5 style="font-size: 16px;text-align: left;">Account Registration</h5>
+                        <div>
+                            <form th:method="POST" th:action="@{/admin/register}" th:object="${userReg}">
+                                <span  class="form-fields">
+                                    <label>Username</label>
+                                    <input type="text" th:field="*{name}" placeholder="your name">
+                                </span>
+                                <span class="form-fields">
+                                    <label>Email Address</label>
+                                    <input type="text" th:field="*{email}" placeholder="name@example.com">
+                                </span>
+                                <span class="form-fields">
+                                    <label>Role</label>
+                                    <select th:field="*{roleName}">
+                                        <option th:each="role : ${rolesList}" th:value="${role}" th:text="${role}" style="width: 80px;"></option>
+                                    </select>
+                                </span>
+                                <span class="form-fields">
+                                    <label>Create Password</label>
+                                    <input type="password" th:field="*{password}" placeholder="enter password">
+                                </span>
+                                <div>
+                                    <input type="submit" value="Register" style="margin: 0.2rem auto;width: 70px;"/>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer>
+
+        </footer>
+    </body>
+</html>

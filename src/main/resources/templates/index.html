@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Index</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link th:href="@{styles.css}" rel="stylesheet">
+    </head>
+    <body>
+        <header>
+            <nav>
+                <ul class="nav-credentials">
+                    <li>
+                        <a th:href="@{/login}">Login</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/login?register}">Sign Up</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <section th:if="${param.register == null}">
+                <div class="form-container">
+                    <h5 style="font-size: 16px;text-align: left;">Sign In</h5>
+                    <div>
+                        <form th:method="POST" th:action="@{/login}">
+                            <span class="form-fields">
+                                <label>Registered Email</label>
+                                <input type="text" name="username" id="username" placeholder="name@example.com"/>
+                            </span>
+                            <span class="form-fields">
+                                <label>Password</label>
+                                <input type="password" name="password" id="password" placeholder="Enter password"/>
+                            </span>
+                            <div style="margin: 1rem auto;">
+                                <input type="submit" value="Log In" style="margin: 0.2rem auto;width: 70px;"/>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+            <section th:if="${param.register}">
+                <div class="form-container">
+                    <h5 style="font-size: 16px;text-align: left;">Account Registration</h5>
+                    <div>
+                        <form th:method="POST" th:action="@{/save}" th:object="${user}">
+                            <span class="form-fields">
+                                <label>Username</label>
+                                <input th:field="*{name}" placeholder="your name"/>
+                            </span>
+                            <span class="form-fields">
+                                <label>Email Address</label>
+                                <input type="text" th:field="*{email}" placeholder="name@example.com"/>
+                            </span>
+                            <span class="form-fields">
+                                <label>Set Password</label>
+                                <input type="password" th:field="*{password}" placeholder="enter password"/>
+                            </span>
+                            <div style="margin: 1rem auto;">
+                                <input type="submit" value="Sign Up" style="margin: 0.2rem auto;width: 70px;"/>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer>
+
+        </footer>
+    </body>
+</html>

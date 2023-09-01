@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Sign In</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+        <style type="text/css">
+            label {
+                display: inline-block;
+                width: 200px;
+                margin: 5px;
+                text-align: left;
+                font-size: 16px;
+	        }
+	        input {
+	            display: inline-block;
+	            width: 150px;
+	            margin: 10px;
+	            text-align center;
+	            font-size: 14px;
+	        }
+	        input[type=checkbox]{
+	            display: inline-block;
+	            width: 20px;
+	            margin: 10px;
+	            font-size: 14px;
+	        }
+	        span {
+	            display: block;
+	        }
+        </style>
+    </head>
+    <body>
+        <section th:if="${param.register}">
+            <p>
+                User Registration
+            </p>
+            <div>
+                <form th:action="@{/save}" th:method="POST" th:object="${user}">
+                    <span>
+                        <label>Username</label>
+                        <input id="name" name="name" type="text" placeholder="Enter full name"/>
+                    </span>
+                    <span>
+                        <label>Email</label>
+                        <input id="email" name="email" type="text" placeholder="example@gmail.com"/>
+                    </span>
+                    <span>
+                        <label>Password</label>
+                        <input id="password" name="password" type="password"/>
+                    </span>
+                    <span>
+                        <label>User Role</label>
+                        <select th:field="*{roleName}">
+                            <option th:each="roleRead : ${rolesList}" th:value="${roleRead}" th:text="${roleRead}"></option>
+                        </select>
+                        <!--<span th:each="role : ${roleList}" style="display:block;">
+                            <input type="checkbox" th:id="role + ${role.id}" th:name="roles" value="${role}">
+                            <label th:text="${role.name}"></label>
+                        </span>-->
+                    </span>
+                    <div>
+                        <input type="submit" value="Register"/>
+                    </div>
+                </form>
+            </div>
+        </section>
+        <section th:if="${param.register == null}">
+            <p>User Log In</p>
+            <form th:action="@{/login}" th:method="POST">
+                <span>
+                    <label>Email</label>
+                    <input name="username" id="username" placeholder="example@gmail.com" type="text"/>
+                </span>
+                <span>
+                    <label>Password</label>
+                    <input name="password" id="password" type="password"/>
+                </span>
+                <div>
+                    <input type="submit" value="Log In"/>
+                </div>
+            </form>
+        </section>
+    </body>
+</html>

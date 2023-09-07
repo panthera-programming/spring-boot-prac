@@ -4,5 +4,5 @@ target
 HELP.md
 webFormSecurity.iml
 .idea
-**/main/resources/secretCredentials.properties
+src/main/resources/secretCredentials.properties
 
